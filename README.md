@@ -1,9 +1,9 @@
-# Mac-Enum
+# badapple
 A Mac OS Enumeration and Web Browser Artifact Acquisition tool
 
 How to run:
-- chmod +x macEnum.py
-- python macEnum.py
+- chmod +x badapple.py
+- python badapple.py
 
 Data collected:
 - OS Info
