@@ -12,3 +12,4 @@ Data collected:
 - Files of Interest
 - Network Info
 - Safari, Chrome and FireFox Web Browser artifacts
+
