@@ -14,4 +14,4 @@ A Mac OS Enumeration and Web Browser Artifact Acquisition tool
 - Safari, Chrome and FireFox Web Browser artifacts
 
 # Screenshot
-![Screenshot](screenshot1.png)
+![Screenshot](Screenshot1.png)
