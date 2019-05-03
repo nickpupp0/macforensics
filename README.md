@@ -1,11 +1,11 @@
 # badapple
 A Mac OS Enumeration and Web Browser Artifact Acquisition tool
 
-How to run:
+# Run Script:
 - chmod +x badapple.py
 - python badapple.py
 
-Data collected:
+# Data collected:
 - OS Info
 - Users and Groups
 - Service Info
