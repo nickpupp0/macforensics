@@ -11,7 +11,9 @@ def main():
 
 	try:
 		
-		banner()
+		print('\x1b[6;1;32m' + '[*] Running macOS Forensic Enumeration & Artifact Acquisition...' +'\x1b[0m')
+		print('\x1b[6;1;32m' + 'v1.2.1' +'\x1b[0m')
+		time.sleep(2)
 
 		# Call Functions
 		getOSInfo()
@@ -21,7 +23,6 @@ def main():
 		getFSEvents()
 		getNetworkInfo()
 		getBrowserArtifacts()
-		getSysPreferences()
 		zipData()
 	
 	except NameError:
@@ -42,14 +43,6 @@ def getOSInfo():
 	os.system('mkdir OSInfo; mv OSInfo.txt OSInfo/')
 	filename1.close()
 	print('[+] Completed - Saved as OSInfo.txt')
-
-# Perform
-def getSysPreferences():
-	print('\x1b[6;1;32m' + '\n[*] Acquiring System Preference Logs' +'\x1b[0m')
-	time.sleep(1)
-	username=getpass.getuser()
-	pwd=os.popen('pwd').read()
-	os.system('mkdir System_Preferences >/dev/null 2>&1; cp /Library/Preferences/*.plist /Users/%s/Desktop/mac_forensics/System_Preferences/ >/dev/null 2>&1' % (username))
 
 # Performs commands to query information about users and groups 
 def getUserGroups():
@@ -118,7 +111,7 @@ def getSpecialFiles():
 
 # Performs commands to gather network information
 def getNetworkInfo():
-	commands=('ifconfig','lsof -i', 'lsof -PiTCP -sTCP:LISTEN', 'scutil --dns','cat /etc/resolv.conf','grep 80 /etc/services', 'lsof -iTCP -sTCP:LISTEN -n -P','netstat -anv | grep [.]PORT', 'cat /Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist')
+	commands=('ifconfig','lsof -i', 'sudo lsof -PiTCP -sTCP:LISTEN', 'scutil --dns','cat /etc/resolv.conf','grep 80 /etc/services', 'lsof -iTCP -sTCP:LISTEN -n -P','netstat -anv | grep [.]PORT', 'cat /Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist')
 	with open('networkInfo.txt','w') as filename3:
 		print('\x1b[6;1;32m' + '\n[+] Acquiring Network Info . . .' +'\x1b[0m')
 		for command in commands:
@@ -156,9 +149,8 @@ def getBrowserArtifacts():
 	for x in users:
 		username = x
 		pwd=os.popen('pwd').read()
-		print('Adding {}'.format(username))
+		print('Discovered user: {}'.format(username))
 		#os.system('cp /Users/%s/Library/Safari/Downloads.plist' % (username))
-		print('Retrieving Artifacts for User: {}'.format(x))
 		time.sleep(1)
 
 		# Retrieve Safari Data
@@ -172,14 +164,19 @@ def getBrowserArtifacts():
 		# Retrieve Google Chrome Data
 	
 		os.system('cd Browser_Artifacts/; mkdir %s >/dev/null 2>&1; cd %s; mkdir chromeArtifacts >/dev/null 2>&1; cp -r /Users/%s/Library/Application\ Support/Google/Chrome/Default/* chromeArtifacts/ >/dev/null 2>&1' % (username, username, username))
-		
+
 		try:
-			#print('getting firefox data')
+
+			pwd=os.popen('pwd').read()
+			users=[]
+			os.system('mkdir Browser_Artifacts')
+
 			time.sleep(1)
+
 			path=("/Users/%s/Library/Application Support/Firefox/Profiles/" %(x))
-			folder = [x for x in os.listdir(path) if os.path.isdir(os.path.join(path,x))]
-			profile=(''.join(folder))
-			os.system('cd Browser_Artifacts/; mkdir %s >/dev/null 2>&1; cd %s; mkdir FireFoxArtifacts >/dev/null 2>&1; cp -r /Users/%s/Library/Application\ Support/Firefox/Profiles/%s* FireFoxArtifacts/ >/dev/null 2>&1' % (username, username, username, profile))
+			
+			os.system('cd Browser_Artifacts/; mkdir %s >/dev/null 2>&1; cd %s; mkdir FireFoxArtifacts; cd FirefoxArtifacts/; cp -R * /Users/defalt/Library/Application\ Support/Firefox/Profiles/ . ' % (username, username))
+			
 
 		except OSError:
 			print('\x1b[6;1;31m' + '[*] No Firefox Data for User: {}'.format(x) +'\x1b[0m')
@@ -190,43 +187,10 @@ def getBrowserArtifacts():
 def zipData():
 	print('\x1b[6;1;32m' + '\n[+] Preparing file for export. . .' +'\x1b[0m')
 	os.system('mkdir mac_artifacts')
-	os.system("mv OSInfo/ mac_artifacts/; mv UserGroups/ mac_artifacts/; mv networkInfo/ mac_artifacts/; mv serviceInfo/ mac_artifacts/; mv specialFiles/ mac_artifacts/; mv Browser_Artifacts/ mac_artifacts; mv System_Preferences/ mac_artifacts/; mv fsevents/ mac_artifacts")
+	os.system("mv OSInfo/ mac_artifacts/; mv UserGroups/ mac_artifacts/; mv networkInfo/ mac_artifacts/; mv serviceInfo/ mac_artifacts/; mv specialFiles/ mac_artifacts/; mv Browser_Artifacts/ mac_artifacts; mv fsevents/ mac_artifacts")
 	os.system("zip -r mac_artifacts mac_artifacts/ >/dev/null 2>&1; rm -r mac_artifacts; cp mac_artifacts.zip ~")
 	print('\x1b[6;1;32m' + '\n[+] Export Completed Successfully.' +'\x1b[0m')
 
-def banner():
-	
-	print("MMMMMMMMMMMMMMMMMx  ^  xMMMMMMMMMMMMMMMM")
-	print("MMMMMMMMMMWN0Oxdo  | |  MxO0XWMMMMMMMMMM")
-	print("MMMMMMMMWNOo;..    | |   ..;oONWMMMMMMMM")
-	print("MMMMMMWKo'         | |       'o0WMMMMMMM")
-	print("MMMMMKl.           | .;o;       .lKMMMMM")
-	print("MMMWk'             'lkN0,         'kWMMM")
-	print("MMWk.         ....:xxo:'.          .kWMM")
-	print("MM0'       .:x0XX0kxxk0XXXOoo.      '0MM")
-	print("MNl       .dWMMMMMMMMMMMMMXo.        lNM")
-	print("MK;____   cNMMMMMMMMMMMMMWo    _____ ;KM")
-	print("MK,--- >> lWMMMMMMMMMMMMMM  << -----,KMM")
-	print("MX:--     ;KMMMMMMMMMMMMMKc.     --- :XM")
-	print("MWx.        NMMMMMMMMMMMMMMd.       .xWM")
-	print("MMXc         MMMMMMMMMMMMMM.        cXMM")
-	print("MMMNd.        ;MMMM| |MMMM.'.     .dNMMM")
-	print("MMMW0l.            | |          .l0WMMMM")
-	print("MMMMMMWK:.         | |        . :dKWMMMM")
-	print("MMMMMMMkd:.        | |	    .:dKWMMMMMMM")
-	print("MMMMMMMMMMWXkoc;,.. v .,;cdkXWMMMMMMMMMM")
-	print("MMMMMMMMMMMMMMMWNXK V XNWMMMMMMMMMMMMMMM")
-	print("    __           __               __")   
-  	print("   / /  ___ ____/ /__ ____  ___  / /___ ") 
- 	print("  / _ \/ _ `/ _  / _ `/ _ \/ _ \/ / -_/ ")
-	print(" /_.__/\_,_/\_,_/\_,_/ .__/ .__/_/\__/ ")
-	print("                    /_/  /_/           ")
-	print("Created by: Nick Puppo")
-	print("Lets Connect: https://www.linkedin.com/in/nicholas-puppo-99853993/ | https://github.com/ceaba55555")
-	time.sleep(3)
-	print("\n")
-	print('\x1b[6;1;32m' + '[*] Running MacOS Enumeration & Forensic Artifact Acquisition\n' +'\x1b[0m')
-	time.sleep(3)
 
 if __name__ == "__main__": 
   
