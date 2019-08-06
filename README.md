@@ -16,6 +16,6 @@ A Mac OS Enumeration and Web Browser Artifact Acquisition tool
 # Screenshots
 
 ## Script Execution
-![Script Execution](executions.png)
+![Script Execution](execution.png)
 ## Analyzing File Output
 ![File Listings](details.png)
