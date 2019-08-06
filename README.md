@@ -13,5 +13,9 @@ A Mac OS Enumeration and Web Browser Artifact Acquisition tool
 - Network Info
 - Safari, Chrome and FireFox Web Browser artifacts
 
-# Screenshot
-![Script Execution](/Users/defalt/Desktop/Development/mac_update/execution.png)
+# Screenshots
+
+## Script Execution
+![Script Execution](execution.png)
+## Analyzing File Output
+![File Listings](details.png)
